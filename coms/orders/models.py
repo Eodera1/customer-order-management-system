@@ -1,15 +1,16 @@
 from django.db import models
+from django_extensions.db.models import TimeStampedModel
 
 # Create your models here.
-class Customer(models.Model):
+class Customer(TimeStampedModel):
     name = models.CharField(max_length=255)
     code = models.CharField(max_length=10, default='N/A')
-    phone_number = models.CharField(max_length=15, default='999999999') 
+    phone_number = models.CharField(max_length=15, default='0714274905') 
     
     def __str__(self):
         return self.name
     
-class Order(models.Model):
+class Order(TimeStampedModel):
     status = models.CharField(max_length=20, default='pending')
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
     item = models.CharField(max_length=100, null=True)

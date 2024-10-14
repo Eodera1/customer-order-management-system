@@ -1,21 +1,10 @@
 from django.db import models
-from django_extensions.db.models import TimeStampedModel
-from django.core.exceptions import ValidationError
 
 # Create your models here.
 class Customer(TimeStampedModel):
     name = models.CharField(max_length=255)
     code = models.CharField(max_length=10, default='N/A')
-    phone_number = models.CharField(max_length=15)
-    
-    def clean(self):
-        # Validation for Customer code
-        if self.code == 'N/A' and self.name:
-            raise ValidationError("Code cannot be 'N/A' when the customer's name is provided.")
-        
-        # Custom validation for phone_number (optional)
-        if not self.phone_number.isdigit() or len(self.phone_number) != 10:
-            raise ValidationError("Phone number must be a valid 10-digit number.")
+    phone_number = models.CharField(max_length=15, default='999999999') 
     
     def __str__(self):
         return self.name

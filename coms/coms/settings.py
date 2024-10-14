@@ -10,6 +10,40 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+from decouple import config
+
+# settings.py
+
+import os
+from decouple import config
+
+# Load SECRET_KEY from .env
+SECRET_KEY = config('SECRET_KEY')
+
+# Load DEBUG value from .env
+DEBUG = config('DEBUG', default=False, cast=bool)
+
+# Load ALLOWED_HOSTS from .env
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')])
+
+# Database configuration
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DATABASE_NAME'),
+        'USER': config('DATABASE_USER'),
+        'PASSWORD': config('DATABASE_PASSWORD'),
+        'HOST': config('DATABASE_HOST'),
+        'PORT': config('DATABASE_PORT', default=5432),
+    }
+}
+
+import environ
+
+env = environ.Env()
+environ.Env.read_env()  # Read the .env file
+
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,12 +54,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-!(qh7*-axq5#i9jcoa2o+w8*s)#myc7)z+ii*av6nidpxvmxr*'
+SECRET_KEY = env('SECRET_KEY')
+#'django-insecure-!(qh7*-axq5#i9jcoa2o+w8*s)#myc7)z+ii*av6nidpxvmxr*'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG', default=False)
+#True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
+#['127.0.0.1']
 
 
 # Application definition

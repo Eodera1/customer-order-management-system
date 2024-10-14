@@ -5,7 +5,7 @@ from django_extensions.db.models import TimeStampedModel
 class Customer(TimeStampedModel):
     name = models.CharField(max_length=255)
     code = models.CharField(max_length=10, default='N/A')
-    phone_number = models.CharField(max_length=15, default='0714274905') 
+    phone_number = models.CharField(max_length=10) 
     
     def __str__(self):
         return self.name
